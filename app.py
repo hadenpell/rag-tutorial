@@ -1,7 +1,7 @@
 import streamlit as st
 from dotenv import load_dotenv
 import nest_asyncio, asyncio
-from rag_code import create_agent
+from rag_code import create_chat_engine
 import gc
 
 load_dotenv()
@@ -13,13 +13,13 @@ nest_asyncio.apply()
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# # Initialize agent and context
-# if "agent" not in st.session_state:
-#     st.session_state.agent, st.session_state.ctx = create_agent()
+# Initialize chat engine
+if "chat_engine" not in st.session_state:
+    st.session_state.chat_engine = create_chat_engine()
 
 def reset_chat():
     st.session_state.messages = []
-    st.session_state.ctx = None
+    st.session_state.chat_engine = create_chat_engine()
     gc.collect()
 
 # Set page configuration
@@ -51,15 +51,15 @@ st.markdown("""
 - What is there to do for fun in Florida?
 - How do people in Chicago get around? """)
 
-# Run workflow and process query, return result
-async def run_workflow(query):
-    try:
-        agent, ctx = create_agent()
-        result = await agent.run(user_msg=query, ctx=ctx)
-        return str(result)
-    except Exception as e:
-        st.error(f"Error processing query: {str(e)}")
-        return f"I'm sorry, I encountered an error: {str(e)}"
+# # Run workflow and process query, return result
+# async def run_workflow(query):
+#     try:
+#         agent, ctx = create_agent()
+#         result = await agent.run(user_msg=query, ctx=ctx)
+#         return str(result)
+#     except Exception as e:
+#         st.error(f"Error processing query: {str(e)}")
+#         return f"I'm sorry, I encountered an error: {str(e)}"
 
 # Add sidebar for chat history
 with st.sidebar:
@@ -89,7 +89,7 @@ if user_query:
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             try:
-                response = asyncio.run(run_workflow(user_query))
+                response = st.session_state.chat_engine.chat(user_query).response
                 st.write(response)
                 # Add response to chat history
                 st.session_state.messages.append({"role": "assistant", "content": response})
