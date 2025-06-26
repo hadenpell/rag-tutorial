@@ -1,6 +1,6 @@
 # US State Guide 🇺🇸: Using RAG and LlamaCloud to Build a Custom Chatbot
 
-This project creates a custom chatbot that can query your LlamaCloud index for RAG-based retrieval.
+This project creates a custom chatbot that can query a LlamaCloud index for RAG-based retrieval.
 In this example, we'll use PDFs of Wikipedia pages of US states to train our model.
 
 We use:
