@@ -51,16 +51,6 @@ st.markdown("""
 - What is there to do for fun in Florida?
 - How do people in Chicago get around? """)
 
-# # Run workflow and process query, return result
-# async def run_workflow(query):
-#     try:
-#         agent, ctx = create_agent()
-#         result = await agent.run(user_msg=query, ctx=ctx)
-#         return str(result)
-#     except Exception as e:
-#         st.error(f"Error processing query: {str(e)}")
-#         return f"I'm sorry, I encountered an error: {str(e)}"
-
 # Add sidebar for chat history
 with st.sidebar:
     st.title("Chat History")
